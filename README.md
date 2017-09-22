@@ -1,2 +1,0 @@
-# Deliveries
-ITtalants intermediate project
