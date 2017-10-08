@@ -9,10 +9,10 @@ import entities.products.Product;
 import entities.roles.Role;
 import entities.users.User;
 import enums.RoleType;
+import exceptions.EmptyShoppingBagException;
 import exceptions.ExistedUserExceprion;
 import exceptions.InvalidAccessException;
 import exceptions.InvalidPasswordEcxeption;
-import exceptions.LoggedException;
 import exceptions.NullRepositoryObjecException;
 import exceptions.UnexistUserException;
 import exceptions.ValidationException;
@@ -52,15 +52,15 @@ public class UserController {
 		return sb.toString();
 	}
 
-	public void create(String... args) throws NullRepositoryObjecException, ValidationException, ExistedUserExceprion {
+	public void create(String... args) throws NullRepositoryObjecException, ValidationException, ExistedUserExceprion, InvalidPasswordEcxeption {
 
 		try {
 			this.users.checkForExisting(args[0]);
 		} catch (UnexistUserException e) {
 			User user = new User(args[0]);
-			this.users.add(user);
-			this.passwords.add(new Password(user.getID(), args[1]));
-			this.roles.add(new Role(user.getID(), RoleType.USER));
+			this.users.add(user, this.secretPass);
+			this.passwords.add(new Password(user.getID(), args[1]), this.secretPass);
+			this.roles.add(new Role(user.getID(), RoleType.USER), this.secretPass);
 			System.out.println("User: " + args[0] + " was created successfully");
 			return;
 		}
@@ -74,36 +74,36 @@ public class UserController {
 			user = this.users.find(username, this.secretPass);
 		} catch (UnexistUserException e) {
 
-			throw new InvalidPasswordEcxeption("Invalid password or user name", e);
+			throw new InvalidPasswordEcxeption("Invalid password or username", e);
 		}
 		try {
 			Password pass = this.passwords.find("" + user.getID(), this.secretPass);
 			if (!pass.getPassword().equals(password)) {
-				throw new InvalidPasswordEcxeption("Invalid password or user name");
+				throw new InvalidPasswordEcxeption("Invalid password or username");
 			}
 		} catch (UnexistUserException e) {
 
-			throw new InvalidPasswordEcxeption("Invalid password or user name", e);
+			throw new InvalidPasswordEcxeption("Invalid password or username", e);
 		}
 
 		return user;
 
 	}
 
-	public void remove(User admin, String userName)
+	public void remove(User admin, String username)
 			throws UnexistUserException, InvalidPasswordEcxeption, InvalidAccessException {
-		this.users.checkForExisting(userName);
+		this.users.checkForExisting(username);
 
-		int userId = this.users.find(userName, secretPass).getID();
+		int userId = this.users.find(username, secretPass).getID();
 
 		if((admin.getID() != userId) && (!RoleType.ADMIN.equals(this.roles.find("" + userId, this.secretPass)))) {
 			throw new InvalidAccessException("Access denied");
 		}
 		
-		this.users.remove(userName);
-		this.passwords.remove("" + userId);
-		this.roles.remove("" + userId);
-		System.out.println("User with username " + userName + " was removed successfully");
+		this.users.remove(username, this.secretPass);
+		this.passwords.remove("" + userId, this.secretPass);
+		this.roles.remove("" + userId, this.secretPass);
+		System.out.println("User with username " + username + " was removed successfully");
 	}
 
 	
@@ -114,7 +114,7 @@ public class UserController {
 		
 	}
 
-	public Order makeOrder(User user){
+	public Order makeOrder(User user) throws EmptyShoppingBagException{
 		return user.makeOrder();		
 	}
 	

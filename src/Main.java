@@ -2,6 +2,7 @@
 import entities.onlinePlatforms.OnlinePlatform;
 import entities.products.Product;
 import entities.users.User;
+import exceptions.EmptyShoppingBagException;
 import exceptions.ExistedUserExceprion;
 import exceptions.InvalidAccessException;
 import exceptions.InvalidPasswordEcxeption;
@@ -16,32 +17,32 @@ public class Main {
 	public static void main(String[] args) {
 		
 		OnlinePlatform onlinePlatform = new OnlinePlatform();
-				
+		User ivan = new User("Ivan");		
 		try {
-			onlinePlatform.register("Plamen", "861154");
-		} catch (NullRepositoryObjecException | ValidationException | ExistedUserExceprion e) {
+			onlinePlatform.register("Plamen", "111111");
+		} catch (NullRepositoryObjecException | ValidationException | ExistedUserExceprion | InvalidPasswordEcxeption e) {
 			System.out.println(e.getMessage());
 		}
 		
 		try {
-			onlinePlatform.register("Plamen1", "861154");
-		} catch (NullRepositoryObjecException | ValidationException | ExistedUserExceprion e) {
+			onlinePlatform.register("Plamen1", "111111");
+		} catch (NullRepositoryObjecException | ValidationException | ExistedUserExceprion | InvalidPasswordEcxeption e) {
 			System.out.println(e.getMessage());
 		}
 		
 		try {
-			User plamen = onlinePlatform.find("Plamen", "861154");
-			onlinePlatform.login("Plamen", "861154");
+			User plamen = onlinePlatform.find("Plamen", "111111");
+			onlinePlatform.login("Plamen", "111111");
 			try {
 				try {
 					onlinePlatform.remove(plamen, "Plamen1");
-				} catch (UnexistUserException | InvalidAccessException e) {
+				} catch (UnexistUserException | InvalidAccessException | ValidationException e) {
 					System.out.println(e.getMessage());
 				}
 				
-				onlinePlatform.AddProduct(new Product(), plamen);
+				onlinePlatform.addProduct(new Product(), plamen);
 				onlinePlatform.makeOrder(plamen);
-			} catch (LoggedException e) {
+			} catch (LoggedException | ValidationException | EmptyShoppingBagException e) {
 				System.out.println(e.getMessage());
 			}
 		} catch (InvalidPasswordEcxeption e) {

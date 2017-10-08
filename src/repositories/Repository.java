@@ -24,7 +24,10 @@ public class Repository<T extends Unique> {
 	}
 	
 
-	public void add(T object) throws NullRepositoryObjecException{
+	public void add(T object, String password) throws NullRepositoryObjecException, InvalidPasswordEcxeption{
+		
+		this.checkPassword(password);
+		
 		if(object == null){
 			throw new NullRepositoryObjecException("Added object mustn't be Null");
 		}
@@ -34,7 +37,9 @@ public class Repository<T extends Unique> {
 		}
 	}
 
-	public void remove(String key) throws UnexistUserException{
+	public void remove(String key, String password) throws UnexistUserException, InvalidPasswordEcxeption{
+		
+		this.checkPassword(password);
 		
 		this.checkForExisting(key);
 		
