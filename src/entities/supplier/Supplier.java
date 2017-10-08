@@ -9,13 +9,11 @@ import entities.orders.Order;
 public class Supplier {
 	private String name;
 	
-
-
-	private static int idNumber=0;
+	private static int idNumber = 0;
 	private Set<Order> orders;
 	private OnlinePlatform site;
 	
-	public Supplier (String name,OnlinePlatform theSite){
+	public Supplier (String name, OnlinePlatform theSite){
 		this.name=name;
 		this.site= theSite;
 		this.orders= new HashSet <Order>();
@@ -28,7 +26,6 @@ public class Supplier {
 		}
 		
 	}
-	
 	
 	
 	public static int getIdNumber() {

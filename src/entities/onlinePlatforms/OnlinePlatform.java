@@ -24,7 +24,7 @@ public class OnlinePlatform {
 	private Set<IDelivarable> shops;
 
 	private UserController userController;	
-	private Map<String, User> leggedUsers;
+	private Map<String, User> loggedUsers;
 	private Map <Integer , Supplier> suppliers;
 	
 
@@ -32,7 +32,7 @@ public class OnlinePlatform {
 
 		this.userController = new UserController(this);
 
-		this.leggedUsers = new HashMap<>();
+		this.loggedUsers = new HashMap<>();
 		this.suppliers= new HashMap<>();
 	}
 	
@@ -50,7 +50,7 @@ public class OnlinePlatform {
 
 		User user = this.userController.identify(username, password);
 
-		this.lоggedUsers.put(user.getKey(), user);
+		this.loggedUsers.put(user.getKey(), user);
 	}
 
 	public void register(String... args)
@@ -67,7 +67,7 @@ public class OnlinePlatform {
 
 		this.userController.remove(admin, username);
 		
-		this.lоggedUsers.remove(username);
+		this.loggedUsers.remove(username);
 	}
 
 	public void addProduct(Product product, User user) throws LoggedException, ValidationException {
@@ -91,7 +91,8 @@ public class OnlinePlatform {
 
 		Order order = this.userController.makeOrder(user);
 
-		Supplier sp = this.suppliers.get((int) (Math.random() * this.suppliers.size()));
+		Supplier sp = this.suppliers.get((int) (Math.random() * this.suppliers.size() + 1));
+		
 		sp.addOrder(order);
 		System.out.println("User("+ user.getKey() + ") made a order");
 
@@ -104,7 +105,7 @@ public class OnlinePlatform {
 
 	private void checkForloggin(User user) throws LoggedException {
 
-		if (!this.lоggedUsers.containsKey(user.getKey())) {
+		if (!this.loggedUsers.containsKey(user.getKey())) {
 			throw new LoggedException("You have to log in");
 		}
 	}

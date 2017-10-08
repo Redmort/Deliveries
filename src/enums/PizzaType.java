@@ -1,6 +1,6 @@
-package entities.products;
+package enums;
 
-public enum Pizzas {
+public enum PizzaType {
 	HAWAI, BURGER_PIZZA, TROPICANA, MARGARITA,  MEXICANA, ITTALENTS_PIZZA, CHEESE_PIZZA, VEGETARIANA, TUNA_FISH_PIZZA
 	
 	
