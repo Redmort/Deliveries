@@ -7,27 +7,40 @@ import java.util.Set;
 import controllers.UserController;
 import entities.orders.Order;
 import entities.products.Product;
+import entities.supplier.Supplier;
 import entities.users.User;
 import exceptions.ExistedUserExceprion;
 import exceptions.InvalidAccessException;
 import exceptions.InvalidPasswordEcxeption;
 import exceptions.LoggedException;
 import exceptions.NullRepositoryObjecException;
+import exceptions.SupplierException;
 import exceptions.UnexistUserException;
 import exceptions.ValidationException;
 import interfaces.IDelivarable;
 
 public class OnlinePlatform {
-
 	private Set<IDelivarable> shops;
 	
 	private UserController userController;
 	
 	private Map<String, User> leggedUsers;
-
+	private Map <Integer , Supplier> suppliers;
+	
 	public OnlinePlatform() {
 		this.userController = new UserController(this);
 		this.leggedUsers = new HashMap<>();
+		this.suppliers= new HashMap<>();
+	}
+	
+	public void addSupplier(Supplier sp) throws SupplierException{
+		if (sp != null){
+			this.suppliers.put(sp.getIdNumber(), sp);
+		}
+		else{
+			throw new SupplierException ("Your supplier doesnt exsist");
+		}
+	
 	}
 	
 	public void login(String username, String password) throws InvalidPasswordEcxeption{
@@ -64,6 +77,8 @@ public class OnlinePlatform {
 		this.checkForloggin(user);
 		
 		Order order = this.userController.makeOrder(user);
+		Supplier sp = this.suppliers.get((int) (Math.random() * this.suppliers.size()));
+		sp.addOrder(order);
 		System.out.println("User("+ user.getKey() + ") made a order");
 	}
 	
