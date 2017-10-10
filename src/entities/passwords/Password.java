@@ -6,7 +6,7 @@ import interfaces.Unique;
 public class Password implements Unique {
 	
 	private final int id;
-	private String salt;
+	//private String salt;
 	private String password;
 	
 	public Password(int id, String password) throws ValidationException {

@@ -5,25 +5,40 @@ import enums.SizeType;
 
 public class Product {
 	
-	private PizzaType name;
-	private double price;
+	private int id;
+	private String name;
+	private int price;
 	private String description;
-	private SizeType size;
+	private String size;
 	
 	
-
-
 	public Product(PizzaType nameOfPizza, SizeType sizeOfPizza) {
-		this.name = nameOfPizza;
-		this.size = sizeOfPizza;
-		this.price = generatePrice(name,size);
-		this.description =generateDescription(nameOfPizza);
+		this.name = nameOfPizza.name();
+		this.size = sizeOfPizza.name();
+		this.price = generatePrice(nameOfPizza,sizeOfPizza);
+		this.description = generateDescription(nameOfPizza);
+	}
+	
+
+	public Product(String name, String size, int price, String description) {
+		
+		this.name = name;
+		this.price = price;
+		this.description = description;
+		this.size = size;
+	}
+
+
+
+	public Product(int id,String name, String size, int price, String description) {
+		this(name, size, price, description);
+		this.id = id;
 	}
 
 
 
 
-	private double generatePrice(PizzaType name2, SizeType size2) {
+	private int generatePrice(PizzaType name2, SizeType size2) {
 		double normalPrice;
 		final double SMALL_HAWAI_PRICE = 5.5;
 		final double SMALL_BURGER_PIZZA_PRICE = 5.7;
@@ -63,20 +78,20 @@ public class Product {
 		
 		if(size2 == SizeType.FAMILY) {
 			final int DIFFRENCE_BETWEEN_SMALL_AND_FAMILY = 3;
-			return normalPrice * DIFFRENCE_BETWEEN_SMALL_AND_FAMILY;
+			return (int) (normalPrice * DIFFRENCE_BETWEEN_SMALL_AND_FAMILY);
 		}
 		
 		if(size2 == SizeType.LARGE) {
 			final double DIFFRENCE_BETWEEN_SMALL_AND_LARGE = 2.2;
-			return normalPrice * DIFFRENCE_BETWEEN_SMALL_AND_LARGE;
+			return (int) (normalPrice * DIFFRENCE_BETWEEN_SMALL_AND_LARGE);
 		}
 		
 		if(size2 == SizeType.MEDIUM) {
 			final double DIFFRENCE_BETWEEN_SMALL_AND_MEDIUM = 1.4;
-			return normalPrice * DIFFRENCE_BETWEEN_SMALL_AND_MEDIUM;
+			return (int) (normalPrice * DIFFRENCE_BETWEEN_SMALL_AND_MEDIUM);
 		}
 
-		return normalPrice;
+		return (int) normalPrice;
 	}
 	
 	private String generateDescription(PizzaType name2){
@@ -118,12 +133,32 @@ public class Product {
 		return descrp;
 	}
 	
-	public double getPrice() {
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public int getPrice() {
 		return price;
 	}
 
-	public PizzaType getName() {
+	public String getName() {
 		return name;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getSize() {
+		return size;
+	}
 	
+	
+	@Override
+	public String toString() {
+		return "~~~~~~~~~~~~~~~~~ " + this.name +" ~~~~~~~~~~~~~~~~~~~\n" +"size: "+ this.size +"\n" + this.description + "\n" + "price: " + this.price;
+	}
 }

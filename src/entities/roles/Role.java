@@ -1,15 +1,14 @@
 package entities.roles;
 
-import enums.RoleType;
 import interfaces.Unique;
 
 public class Role implements Unique{
 
 	private int id;
-	private RoleType roleType;
+	private String roleType;
 	
 
-	public Role(int id, RoleType roleType) {
+	public Role(int id, String roleType) {
 		this.id = id;
 		this.roleType = roleType;
 	}
@@ -21,9 +20,16 @@ public class Role implements Unique{
 	}
 
 
-	public RoleType getRoleType() {
+	public String getRoleType() {
 		return roleType;
 	}
+
+
+	public int getId() {
+		return id;
+	}
+	
+	
 	
 	
 

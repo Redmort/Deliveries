@@ -1,4 +1,8 @@
 
+import java.sql.Connection;
+
+import connection.DBConnection;
+import connection.UserDAO;
 import entities.onlinePlatforms.OnlinePlatform;
 import entities.products.Product;
 import entities.supplier.Supplier;
@@ -18,7 +22,10 @@ import exceptions.ValidationException;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		
+		UserDAO userDAO = new UserDAO();
+		
 		
 		OnlinePlatform onlinePlatform = new OnlinePlatform();
 		try {
@@ -26,7 +33,22 @@ public class Main {
 		} catch (SupplierException e1) {
 			System.out.println(e1.getMessage());
 		}
-		User ivan = new User("Ivan");		
+		
+		
+//		User ivan = new User("Gencho2", "sofia", "gencho", "pitonq", "pitonq@abv.bg2");	
+//		User ivan1 = new User("Gencho1", "sofia", "gencho", "pitonq", "pitonq@abv.bg1");	
+		
+	
+//		userDAO.addUser(ivan);
+		
+		
+//		int id = userDAO.addUser(ivan);
+		
+	
+		User gencho = userDAO.getUserById("Gencho2");
+		int id = gencho.getID();
+		userDAO.removeUser(id);
+		
 		try {
 			onlinePlatform.register("Plamen", "111111");
 		} catch (NullRepositoryObjecException | ValidationException | ExistedUserExceprion | InvalidPasswordEcxeption e) {
@@ -49,7 +71,7 @@ public class Main {
 					System.out.println(e.getMessage());
 				}
 				
-				onlinePlatform.addProduct(new Product(PizzaType.BURGER_PIZZA, SizeType.FAMILY), plamen);
+				onlinePlatform.addProduct(PizzaType.BURGER_PIZZA.name(), SizeType.FAMILY.name(), plamen);
 				onlinePlatform.makeOrder(plamen);
 			} catch (LoggedException | ValidationException | EmptyShoppingBagException e) {
 				System.out.println(e.getMessage());
